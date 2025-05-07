@@ -46,7 +46,7 @@ COPY --from=frontend-builder /app/frontend/package.json ./frontend/package.json
 COPY --from=backend-builder /app/backend/pocket-id-backend ./backend/pocket-id-backend
 
 COPY ./scripts ./scripts
-RUN chmod +x ./scripts/**/*.sh
+RUN find ./scripts -name "*.sh" -exec chmod +x {} \;
 
 EXPOSE 80
 ENV APP_ENV=production
