@@ -6,8 +6,8 @@
 	let { currentPage }: { currentPage: 'personal' | 'global' } = $props();
 </script>
 
-<div class="flex justify-end no-fade">
-	<Tabs.Root value={currentPage} >
+<div class="no-fade flex justify-end">
+	<Tabs.Root value={currentPage}>
 		<Tabs.List>
 			<Tabs.Trigger onclick={() => goto('/settings/audit-log')} value="personal"
 				>{m.personal()}</Tabs.Trigger

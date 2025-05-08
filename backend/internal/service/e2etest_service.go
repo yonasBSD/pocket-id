@@ -29,15 +29,16 @@ type TestService struct {
 	db               *gorm.DB
 	jwtService       *JwtService
 	appConfigService *AppConfigService
+	ldapService      *LdapService
 }
 
-func NewTestService(db *gorm.DB, appConfigService *AppConfigService, jwtService *JwtService) *TestService {
-	return &TestService{db: db, appConfigService: appConfigService, jwtService: jwtService}
+func NewTestService(db *gorm.DB, appConfigService *AppConfigService, jwtService *JwtService, ldapService *LdapService) *TestService {
+	return &TestService{db: db, appConfigService: appConfigService, jwtService: jwtService, ldapService: ldapService}
 }
 
 //nolint:gocognit
 func (s *TestService) SeedDatabase() error {
-	return s.db.Transaction(func(tx *gorm.DB) error {
+	err := s.db.Transaction(func(tx *gorm.DB) error {
 		users := []model.User{
 			{
 				Base: model.Base{
@@ -238,6 +239,12 @@ func (s *TestService) SeedDatabase() error {
 
 		return nil
 	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *TestService) ResetDatabase() error {
@@ -348,4 +355,53 @@ func (s *TestService) getCborPublicKey(base64PublicKey string) ([]byte, error) {
 	}
 
 	return cborPublicKey, nil
+}
+
+// SyncLdap triggers an LDAP synchronization
+func (s *TestService) SyncLdap(ctx context.Context) error {
+	return s.ldapService.SyncAll(ctx)
+}
+
+// SetLdapTestConfig writes the test LDAP config variables directly to the database.
+func (s *TestService) SetLdapTestConfig(ctx context.Context) error {
+	err := s.db.Transaction(func(tx *gorm.DB) error {
+		ldapConfigs := map[string]string{
+			"ldapUrl":                            "ldap://lldap:3890",
+			"ldapBindDn":                         "uid=admin,ou=people,dc=pocket-id,dc=org",
+			"ldapBindPassword":                   "admin_password",
+			"ldapBase":                           "dc=pocket-id,dc=org",
+			"ldapUserSearchFilter":               "(objectClass=person)",
+			"ldapUserGroupSearchFilter":          "(objectClass=groupOfNames)",
+			"ldapSkipCertVerify":                 "true",
+			"ldapAttributeUserUniqueIdentifier":  "uuid",
+			"ldapAttributeUserUsername":          "uid",
+			"ldapAttributeUserEmail":             "mail",
+			"ldapAttributeUserFirstName":         "givenName",
+			"ldapAttributeUserLastName":          "sn",
+			"ldapAttributeGroupUniqueIdentifier": "uuid",
+			"ldapAttributeGroupName":             "uid",
+			"ldapAttributeGroupMember":           "member",
+			"ldapAttributeAdminGroup":            "admin_group",
+			"ldapSoftDeleteUsers":                "true",
+			"ldapEnabled":                        "true",
+		}
+
+		for key, value := range ldapConfigs {
+			configVar := model.AppConfigVariable{Key: key, Value: value}
+			if err := tx.Create(&configVar).Error; err != nil {
+				return fmt.Errorf("failed to create config variable '%s': %w", key, err)
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
+		return fmt.Errorf("failed to set LDAP test config: %w", err)
+	}
+
+	if err := s.appConfigService.LoadDbConfig(ctx); err != nil {
+		return fmt.Errorf("failed to load app config: %w", err)
+	}
+
+	return nil
 }

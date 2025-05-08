@@ -17,6 +17,9 @@ jobs:
   build:
     if: github.event.pull_request.head.ref != 'i18n_crowdin'
     timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,6 +47,9 @@ jobs:
 
   test-sqlite:
     if: github.event.pull_request.head.ref != 'i18n_crowdin'
+    permissions:
+      contents: read
+      actions: write
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -72,6 +78,23 @@ jobs:
       - name: Load Docker image
         run: docker load -i /tmp/docker-image.tar
 
+      - name: Cache LLDAP Docker image
+        uses: actions/cache@v3
+        id: lldap-cache
+        with:
+          path: /tmp/lldap-image.tar
+          key: lldap-stable-${{ runner.os }}
+
+      - name: Pull and save LLDAP image
+        if: steps.lldap-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull nitnelave/lldap:stable
+          docker save nitnelave/lldap:stable > /tmp/lldap-image.tar
+
+      - name: Load LLDAP image from cache
+        if: steps.lldap-cache.outputs.cache-hit == 'true'
+        run: docker load < /tmp/lldap-image.tar
+
       - name: Install frontend dependencies
         working-directory: ./frontend
         run: npm ci
@@ -81,9 +104,18 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium
 
-      - name: Run Docker Container with Sqlite DB
+      - name: Create Docker network
+        run: docker network create pocket-id-network
+
+      - name: Setup and Configure LLDAP Server
+        run: |
+          chmod +x ./scripts/tests/setup-lldap.sh
+          ./scripts/tests/setup-lldap.sh
+
+      - name: Run Docker Container with Sqlite DB and LDAP
         run: |
           docker run -d --name pocket-id-sqlite \
+          --network pocket-id-network \
           -p 80:80 \
           -e APP_ENV=test \
           pocket-id:test
@@ -114,6 +146,9 @@ jobs:
 
   test-postgres:
     if: github.event.pull_request.head.ref != 'i18n_crowdin'
+    permissions:
+      contents: read
+      actions: write
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -150,6 +185,23 @@ jobs:
         if: steps.postgres-cache.outputs.cache-hit == 'true'
         run: docker load < /tmp/postgres-image.tar
 
+      - name: Cache LLDAP Docker image
+        uses: actions/cache@v3
+        id: lldap-cache
+        with:
+          path: /tmp/lldap-image.tar
+          key: lldap-stable-${{ runner.os }}
+
+      - name: Pull and save LLDAP image
+        if: steps.lldap-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull nitnelave/lldap:stable
+          docker save nitnelave/lldap:stable > /tmp/lldap-image.tar
+
+      - name: Load LLDAP image from cache
+        if: steps.lldap-cache.outputs.cache-hit == 'true'
+        run: docker load < /tmp/lldap-image.tar
+
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
         with:
@@ -181,9 +233,14 @@ jobs:
           -p 5432:5432 \
           postgres:17
 
+      - name: Setup and Configure LLDAP Server
+        run: |
+          chmod +x ./scripts/tests/setup-lldap.sh
+          ./scripts/tests/setup-lldap.sh
+
       - name: Wait for Postgres to start
         run: |
-          for i in {1..10}; do
+          for i in {1..5}; do
             if docker exec pocket-id-db pg_isready -U postgres; then
               echo "Postgres is ready"
               break
@@ -192,7 +249,7 @@ jobs:
             sleep 2
           done
 
-      - name: Run Docker Container with Postgres DB
+      - name: Run Docker Container with Postgres DB and LDAP
         run: |
           docker run -d --name pocket-id-postgres \
           --network pocket-id-network \

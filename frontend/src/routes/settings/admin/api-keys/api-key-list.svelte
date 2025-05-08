@@ -29,7 +29,9 @@
 	function revokeApiKey(apiKey: ApiKey) {
 		openConfirmDialog({
 			title: m.revoke_api_key(),
-			message: m.are_you_sure_you_want_to_revoke_the_api_key_apikeyname({ apiKeyName: apiKey.name }),
+			message: m.are_you_sure_you_want_to_revoke_the_api_key_apikeyname({
+				apiKeyName: apiKey.name
+			}),
 			confirm: {
 				label: m.revoke(),
 				destructive: true,
@@ -66,8 +68,11 @@
 		<Table.Cell>{formatDate(item.expiresAt)}</Table.Cell>
 		<Table.Cell>{formatDate(item.lastUsedAt)}</Table.Cell>
 		<Table.Cell class="flex justify-end">
-			<Button on:click={() => revokeApiKey(item)} size="sm" variant="outline" aria-label={m.revoke()}
-				><LucideBan class="h-3 w-3 text-red-500" /></Button
+			<Button
+				on:click={() => revokeApiKey(item)}
+				size="sm"
+				variant="outline"
+				aria-label={m.revoke()}><LucideBan class="h-3 w-3 text-red-500" /></Button
 			>
 		</Table.Cell>
 	{/snippet}

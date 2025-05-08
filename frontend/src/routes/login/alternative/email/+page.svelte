@@ -53,7 +53,9 @@
 			<Button variant="secondary" class="w-full" href={'/login/alternative' + page.url.search}
 				>{m.go_back()}</Button
 			>
-			<Button class="w-full" href={'/login/alternative/code' + page.url.search}>{m.enter_code()}</Button>
+			<Button class="w-full" href={'/login/alternative/code' + page.url.search}
+				>{m.enter_code()}</Button
+			>
 		</div>
 	{:else}
 		<form

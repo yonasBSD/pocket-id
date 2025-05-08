@@ -68,7 +68,9 @@
 	>
 		<Input id="Email" class="mt-7" placeholder={m.code()} bind:value={code} type="text" />
 		<div class="mt-8 flex justify-stretch gap-2">
-			<Button variant="secondary" class="w-full" href={"/login/alternative" + page.url.search}>{m.go_back()}</Button>
+			<Button variant="secondary" class="w-full" href={'/login/alternative' + page.url.search}
+				>{m.go_back()}</Button
+			>
 			<Button class="w-full" type="submit" {isLoading}>{m.submit()}</Button>
 		</div>
 	</form>

@@ -24,7 +24,7 @@
 	<DropdownMenu.Content class="min-w-40" align="start">
 		<DropdownMenu.Label class="font-normal">
 			<div class="flex flex-col space-y-1">
-				<p class="text-sm font-medium leading-none">
+				<p class="text-sm leading-none font-medium">
 					{$userStore?.firstName}
 					{$userStore?.lastName}
 				</p>

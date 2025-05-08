@@ -9,7 +9,6 @@ import type {
 import type { Paginated, SearchPaginationSortRequest } from '$lib/types/pagination.type';
 import APIService from './api-service';
 
-
 class OidcService extends APIService {
 	async authorize(
 		clientId: string,

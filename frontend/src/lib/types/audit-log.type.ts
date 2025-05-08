@@ -12,7 +12,7 @@ export type AuditLog = {
 };
 
 export type AuditLogFilter = {
-	userId: string,
-	event: string,
-	clientName: string,
-}
+	userId: string;
+	event: string;
+	clientName: string;
+};

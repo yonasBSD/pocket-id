@@ -24,7 +24,8 @@ const authenticationHandle: Handle = async ({ event, resolve }) => {
 	const { isSignedIn, isAdmin } = verifyJwt(event.cookies.get(ACCESS_TOKEN_COOKIE_NAME));
 
 	const path = event.url.pathname;
-	const isUnauthenticatedOnlyPath = path == '/login' || path.startsWith('/login/') || path == '/lc' || path.startsWith('/lc/')
+	const isUnauthenticatedOnlyPath =
+		path == '/login' || path.startsWith('/login/') || path == '/lc' || path.startsWith('/lc/');
 	const isPublicPath = ['/authorize', '/device', '/health', '/healthz'].includes(path);
 	const isAdminPath = path == '/settings/admin' || path.startsWith('/settings/admin/');
 
@@ -79,7 +80,7 @@ function verifyJwt(accessToken: string | undefined) {
 		const jwtPayload = decodeJwt<{ isAdmin: boolean }>(accessToken);
 		if (jwtPayload?.exp && jwtPayload.exp * 1000 > Date.now()) {
 			isSignedIn = true;
-			isAdmin = !!(jwtPayload?.isAdmin);
+			isAdmin = !!jwtPayload?.isAdmin;
 		}
 	}
 

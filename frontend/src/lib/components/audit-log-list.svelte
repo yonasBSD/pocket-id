@@ -37,7 +37,7 @@
 			: (auditLogs = await auditLogService.list(options))}
 	columns={[
 		{ label: m.time(), sortColumn: 'createdAt' },
-        ...(isAdmin ? [{ label: 'Username' }] : []),
+		...(isAdmin ? [{ label: 'Username' }] : []),
 		{ label: m.event(), sortColumn: 'event' },
 		{ label: m.approximate_location(), sortColumn: 'city' },
 		{ label: m.ip_address(), sortColumn: 'ipAddress' },

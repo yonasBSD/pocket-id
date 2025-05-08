@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Command as CommandPrimitive } from "cmdk-sv";
-	import { cn } from "$lib/utils/style.js";
-	import type { ClassValue } from "svelte/elements";
+	import { Command as CommandPrimitive } from 'cmdk-sv';
+	import { cn } from '$lib/utils/style.js';
+	import type { ClassValue } from 'svelte/elements';
 
 	type $$Props = CommandPrimitive.ItemProps;
 
@@ -14,7 +14,7 @@
 <CommandPrimitive.Item
 	{asChild}
 	class={cn(
-		"aria-selected:bg-accent aria-selected:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+		'aria-selected:bg-accent aria-selected:text-accent-foreground relative flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
 		className
 	)}
 	{...$$restProps}

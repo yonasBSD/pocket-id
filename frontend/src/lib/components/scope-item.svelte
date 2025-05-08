@@ -5,9 +5,9 @@
 </script>
 
 <div class="flex items-center">
-	<div class="mr-5 rounded-lg bg-muted p-2"><svelte:component this={icon} /></div>
+	<div class="bg-muted mr-5 rounded-lg p-2"><svelte:component this={icon} /></div>
 	<div class="text-start">
 		<h3 class="font-semibold">{name}</h3>
-		<p class="text-sm text-muted-foreground">{description}</p>
+		<p class="text-muted-foreground text-sm">{description}</p>
 	</div>
 </div>

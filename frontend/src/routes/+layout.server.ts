@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	const appConfigService = new AppConfigService(accessToken);
 
 	const userPromise = userService.getCurrent().catch(() => null);
-	
+
 	const appConfigPromise = appConfigService.list().catch((e) => {
 		console.error(
 			`Failed to get application configuration: ${e.response?.data.error || e.message}`

@@ -8,4 +8,4 @@ export const load: PageLoad = async ({ url }) => {
 		targetPath += `?redirect=${encodeURIComponent(url.searchParams.get('redirect')!)}`;
 	}
 	return redirect(307, targetPath);
-}
+};

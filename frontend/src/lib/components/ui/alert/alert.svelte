@@ -37,7 +37,9 @@
 	<div class={cn(alertVariants({ variant }), className)} {...$$restProps} role="alert">
 		<slot />
 		{#if dismissibleId}
-			<button on:click={dismiss} class="absolute top-0 right-0 m-3 text-black dark:text-white"><LucideX class="w-4" /></button>
+			<button on:click={dismiss} class="absolute top-0 right-0 m-3 text-black dark:text-white"
+				><LucideX class="w-4" /></button
+			>
 		{/if}
 	</div>
 {/if}

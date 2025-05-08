@@ -13,4 +13,4 @@ export const load: PageLoad = async ({ url, params }) => {
 	}
 
 	return redirect(307, `${targetPath}?${searchParams.toString()}`);
-}
+};

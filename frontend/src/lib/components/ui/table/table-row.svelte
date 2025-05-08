@@ -11,7 +11,7 @@
 </script>
 
 <tr
-	class={cn('border-b transition-colors data-[state=selected]:bg-muted', className)}
+	class={cn('data-[state=selected]:bg-muted border-b transition-colors', className)}
 	{...$$restProps}
 	on:click
 	on:keydown

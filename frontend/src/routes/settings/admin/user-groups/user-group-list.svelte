@@ -64,7 +64,8 @@
 		<Table.Cell>{item.userCount}</Table.Cell>
 		{#if $appConfigStore.ldapEnabled}
 			<Table.Cell>
-				<Badge variant={item.ldapId ? 'default' : 'outline'}>{item.ldapId ? m.ldap() : m.local()}</Badge
+				<Badge variant={item.ldapId ? 'default' : 'outline'}
+					>{item.ldapId ? m.ldap() : m.local()}</Badge
 				>
 			</Table.Cell>
 		{/if}

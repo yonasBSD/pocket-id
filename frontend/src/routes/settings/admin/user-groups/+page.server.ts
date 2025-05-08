@@ -10,9 +10,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		sort: {
 			column: 'friendlyName',
 			direction: 'asc'
-		},
+		}
 	};
 
 	const userGroups = await userGroupService.list(userGroupsRequestOptions);
-	return {userGroups, userGroupsRequestOptions};
+	return { userGroups, userGroupsRequestOptions };
 };

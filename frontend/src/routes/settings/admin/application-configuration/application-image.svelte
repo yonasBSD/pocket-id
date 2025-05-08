@@ -59,7 +59,7 @@
 				alt={label}
 			/>
 			<span
-				class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-medium opacity-0 transition-opacity group-hover:opacity-100"
+				class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform font-medium opacity-0 transition-opacity group-hover:opacity-100"
 			>
 				{m.update()}
 			</span>

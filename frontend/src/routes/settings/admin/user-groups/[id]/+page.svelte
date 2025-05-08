@@ -101,7 +101,7 @@
 <CollapsibleCard
 	id="user-group-custom-claims"
 	title={m.custom_claims()}
-	description={m.custom_claims_are_key_value_pairs_that_can_be_used_to_store_additional_information_about_a_user_prioritized()}  
+	description={m.custom_claims_are_key_value_pairs_that_can_be_used_to_store_additional_information_about_a_user_prioritized()}
 >
 	<CustomClaimsInput bind:customClaims={userGroup.customClaims} />
 	<div class="mt-5 flex justify-end">

@@ -93,7 +93,6 @@
 	</Alert.Root>
 {/if}
 
-
 <!-- Login code card mobile -->
 <div class="block sm:hidden">
 	<Card.Root>
@@ -166,7 +165,6 @@
 		{/if}
 	</Card.Root>
 </div>
-
 
 <!-- Login code card -->
 <div class="hidden sm:block">

@@ -63,8 +63,7 @@
 	async function createClientSecret() {
 		openConfirmDialog({
 			title: m.create_new_client_secret(),
-			message:
-				m.are_you_sure_you_want_to_create_a_new_client_secret(),
+			message: m.are_you_sure_you_want_to_create_a_new_client_secret(),
 			confirm: {
 				label: m.generate(),
 				destructive: true,
@@ -119,7 +118,7 @@
 				</CopyToClipboard>
 			</div>
 			{#if !client.isPublic}
-				<div class="mb-2 mt-1 flex flex-col sm:flex-row sm:items-center">
+				<div class="mt-1 mb-2 flex flex-col sm:flex-row sm:items-center">
 					<Label class="mb-0 w-44">{m.client_secret()}</Label>
 					{#if $clientSecretStore}
 						<CopyToClipboard value={$clientSecretStore}>

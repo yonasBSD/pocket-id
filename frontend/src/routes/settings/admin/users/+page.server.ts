@@ -14,5 +14,5 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	};
 
 	const users = await userService.list(usersRequestOptions);
-	return {users, usersRequestOptions};
+	return { users, usersRequestOptions };
 };
